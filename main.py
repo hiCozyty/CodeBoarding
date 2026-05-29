@@ -2,9 +2,9 @@ import argparse
 import sys
 from pathlib import Path
 
-from codeboarding_cli.commands import full_analysis, incremental_analysis, partial_analysis
+from codeboarding_cli.commands import full_analysis, incremental_analysis, partial_analysis, tree_view
 
-_SUBCOMMANDS = {"full", "incremental", "partial"}
+_SUBCOMMANDS = {"full", "incremental", "partial", "tree"}
 
 
 def _build_shared_parser() -> argparse.ArgumentParser:
@@ -55,6 +55,7 @@ Examples:
     full_analysis.add_arguments(subparsers, parents=[shared])
     incremental_analysis.add_arguments(subparsers, parents=[shared])
     partial_analysis.add_arguments(subparsers, parents=[shared])
+    tree_view.add_arguments(subparsers, parents=[shared])
     return parser
 
 
@@ -85,6 +86,9 @@ def main(argv: list[str] | None = None) -> None:
         return
     if args.command == "partial":
         partial_analysis.run_from_args(args, parser)
+        return
+    if args.command == "tree":
+        tree_view.run_from_args(args, parser)
         return
     full_analysis.run_from_args(args, parser)
 
